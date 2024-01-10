@@ -56,6 +56,7 @@ func GetDefaultProjectConfig(platform string) (*ProjectConfig, error) {
 				StopOnFailedContractMatching: false,
 				StopOnNoTests:                true,
 				TestAllContracts:             false,
+				CallFallbackFunction:         false,
 				TraceAll:                     false,
 				AssertionTesting: AssertionTestingConfig{
 					Enabled:         false,
