@@ -707,6 +707,25 @@ func (f *Fuzzer) Stop() {
 	}
 }
 
+// updateFuzzerGasUsageMetrics updates the gas usage metrics for the fuzzer
+func (f *Fuzzer) updateFuzzerGasUsageMetrics(callSequence calls.CallSequence) {
+	// If we have coverage-guided fuzzing disabled or no calls in our sequence, there is nothing to do.
+	if len(callSequence) == 0 {
+		return
+	}
+
+	// Obtain the message result for the last call in the call sequence.
+	lastCall := callSequence[len(callSequence)-1]
+	lastCallChainReference := lastCall.ChainReference
+	lastMessageResult := lastCallChainReference.Block.MessageResults[lastCallChainReference.TransactionIndex]
+
+	// Update the gas usage metrics
+	if f.metrics.highestGasUsage.Uint64() < lastMessageResult.ExecutionResult.UsedGas {
+		f.metrics.highestGasUsage = big.NewInt(int64(lastMessageResult.ExecutionResult.UsedGas))
+		f.metrics.highestGasUsageTx = lastCall
+	}
+}
+
 // printMetricsLoop prints metrics to the console in a loop until ctx signals a stopped operation.
 func (f *Fuzzer) printMetricsLoop() {
 	// Define our start time
@@ -805,6 +824,13 @@ func (f *Fuzzer) printExitingResults() {
 		} else if testCase.Status() == TestCaseStatusFailed {
 			testCountFailed++
 		}
+	}
+
+	// Print gas usage metrics if gas usage monitoring is enabled
+	if f.config.Fuzzing.MonitorGasUsage {
+		f.logger.Info("Gas usage monitoring enabled, results follow below ...")
+		f.logger.Info("Highest gas consumption: ", colors.RedBold, f.metrics.highestGasUsage)
+		f.logger.Info("Tx with highest gas consumption: ", colors.Red, f.metrics.highestGasUsageTx, "\n")
 	}
 
 	// Print our final tally of test statuses.

@@ -290,6 +290,9 @@ func (fw *FuzzerWorker) testNextCallSequence() (calls.CallSequence, []ShrinkCall
 
 		// Update our metrics
 		fw.workerMetrics().callsTested.Add(fw.workerMetrics().callsTested, big.NewInt(1))
+		if fw.fuzzer.config.Fuzzing.MonitorGasUsage {
+			fw.fuzzer.updateFuzzerGasUsageMetrics(currentlyExecutedSequence)
+		}
 
 		// If our fuzzer context is done, exit out immediately without results.
 		if utils.CheckContextDone(fw.fuzzer.ctx) {

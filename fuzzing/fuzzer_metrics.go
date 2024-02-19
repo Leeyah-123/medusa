@@ -1,9 +1,18 @@
 package fuzzing
 
-import "math/big"
+import (
+	"github.com/crytic/medusa/fuzzing/calls"
+	"math/big"
+)
 
 // FuzzerMetrics represents a struct tracking metrics for a Fuzzer run.
 type FuzzerMetrics struct {
+	// highestGasUsage describes the highest gas usage by a transaction observed across all workers.
+	highestGasUsage *big.Int
+
+	// highestGasUsageTx describes the transaction which has the highest gas usage observed across all workers.
+	highestGasUsageTx *calls.CallSequenceElement
+
 	// workerMetrics describes the metrics for each individual worker. This expands as needed and some slots may be nil
 	// while workers are initializing, as it corresponds to the indexes in Fuzzer.workers.
 	workerMetrics []fuzzerWorkerMetrics
@@ -26,7 +35,9 @@ type fuzzerWorkerMetrics struct {
 func newFuzzerMetrics(workerCount int) *FuzzerMetrics {
 	// Create a new metrics struct and return it with as many slots as required.
 	metrics := FuzzerMetrics{
-		workerMetrics: make([]fuzzerWorkerMetrics, workerCount),
+		highestGasUsage:   big.NewInt(0),
+		highestGasUsageTx: nil,
+		workerMetrics:     make([]fuzzerWorkerMetrics, workerCount),
 	}
 	for i := 0; i < len(metrics.workerMetrics); i++ {
 		metrics.workerMetrics[i].sequencesTested = big.NewInt(0)
