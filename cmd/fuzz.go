@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/crytic/medusa/cmd/exitcodes"
+	"github.com/crytic/medusa/fuzzing/llm_assistant"
 	"github.com/crytic/medusa/logging/colors"
 	"os"
 	"os/signal"
@@ -148,6 +149,12 @@ func cmdRunFuzz(cmd *cobra.Command, args []string) error {
 	fuzzer, fuzzErr := fuzzing.NewFuzzer(*projectConfig)
 	if fuzzErr != nil {
 		return exitcodes.NewErrorWithExitCode(fuzzErr, exitcodes.ExitCodeHandledError)
+	}
+
+	// Generate our fuzzing harness using GPT-4
+	err = llm_assistant.GenerateFuzzingHarness(fuzzer.ContractDefinitions())
+	if err != nil {
+		return exitcodes.NewErrorWithExitCode(err, exitcodes.ExitCodeGeneralError)
 	}
 
 	// Stop our fuzzing on keyboard interrupts

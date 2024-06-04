@@ -59,6 +59,12 @@ type FuzzingConfig struct {
 	// CoverageEnabled describes whether to use coverage-guided fuzzing
 	CoverageEnabled bool `json:"coverageEnabled"`
 
+	// GenerateFuzzHarness indicates whether a fuzz harness will be generated automatically from the main contracts, if any.
+	GenerateFuzzHarness bool `json:"generateFuzzHarness"`
+
+	// MainContracts are the contracts that a fuzz harness will be generated automatically for
+	MainContracts []string `json:"mainContracts"`
+
 	// TargetContracts are the target contracts for fuzz testing
 	TargetContracts []string `json:"targetContracts"`
 

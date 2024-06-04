@@ -24,3 +24,6 @@ medusa
 
 # Medusa docs
 docs/book
+
+# Environment variables
+fuzzing/llm_assistant/.env

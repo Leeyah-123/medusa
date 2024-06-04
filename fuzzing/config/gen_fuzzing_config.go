@@ -19,9 +19,12 @@ func (f FuzzingConfig) MarshalJSON() ([]byte, error) {
 		WorkerResetLimit        int                       `json:"workerResetLimit"`
 		Timeout                 int                       `json:"timeout"`
 		TestLimit               uint64                    `json:"testLimit"`
+		ShrinkLimit             uint64                    `json:"shrinkLimit"`
 		CallSequenceLength      int                       `json:"callSequenceLength"`
 		CorpusDirectory         string                    `json:"corpusDirectory"`
 		CoverageEnabled         bool                      `json:"coverageEnabled"`
+		GenerateFuzzHarness     bool                      `json:"generateFuzzHarness"`
+		MainContracts           []string                  `json:"mainContracts"`
 		TargetContracts         []string                  `json:"targetContracts"`
 		TargetContractsBalances []*hexutil.Big            `json:"targetContractsBalances"`
 		ConstructorArgs         map[string]map[string]any `json:"constructorArgs"`
@@ -39,9 +42,12 @@ func (f FuzzingConfig) MarshalJSON() ([]byte, error) {
 	enc.WorkerResetLimit = f.WorkerResetLimit
 	enc.Timeout = f.Timeout
 	enc.TestLimit = f.TestLimit
+	enc.ShrinkLimit = f.ShrinkLimit
 	enc.CallSequenceLength = f.CallSequenceLength
 	enc.CorpusDirectory = f.CorpusDirectory
 	enc.CoverageEnabled = f.CoverageEnabled
+	enc.GenerateFuzzHarness = f.GenerateFuzzHarness
+	enc.MainContracts = f.MainContracts
 	enc.TargetContracts = f.TargetContracts
 	if f.TargetContractsBalances != nil {
 		enc.TargetContractsBalances = make([]*hexutil.Big, len(f.TargetContractsBalances))
@@ -68,9 +74,12 @@ func (f *FuzzingConfig) UnmarshalJSON(input []byte) error {
 		WorkerResetLimit        *int                      `json:"workerResetLimit"`
 		Timeout                 *int                      `json:"timeout"`
 		TestLimit               *uint64                   `json:"testLimit"`
+		ShrinkLimit             *uint64                   `json:"shrinkLimit"`
 		CallSequenceLength      *int                      `json:"callSequenceLength"`
 		CorpusDirectory         *string                   `json:"corpusDirectory"`
 		CoverageEnabled         *bool                     `json:"coverageEnabled"`
+		GenerateFuzzHarness     *bool                     `json:"generateFuzzHarness"`
+		MainContracts           []string                  `json:"mainContracts"`
 		TargetContracts         []string                  `json:"targetContracts"`
 		TargetContractsBalances []*hexutil.Big            `json:"targetContractsBalances"`
 		ConstructorArgs         map[string]map[string]any `json:"constructorArgs"`
@@ -99,6 +108,9 @@ func (f *FuzzingConfig) UnmarshalJSON(input []byte) error {
 	if dec.TestLimit != nil {
 		f.TestLimit = *dec.TestLimit
 	}
+	if dec.ShrinkLimit != nil {
+		f.ShrinkLimit = *dec.ShrinkLimit
+	}
 	if dec.CallSequenceLength != nil {
 		f.CallSequenceLength = *dec.CallSequenceLength
 	}
@@ -107,6 +119,12 @@ func (f *FuzzingConfig) UnmarshalJSON(input []byte) error {
 	}
 	if dec.CoverageEnabled != nil {
 		f.CoverageEnabled = *dec.CoverageEnabled
+	}
+	if dec.GenerateFuzzHarness != nil {
+		f.GenerateFuzzHarness = *dec.GenerateFuzzHarness
+	}
+	if dec.MainContracts != nil {
+		f.MainContracts = dec.MainContracts
 	}
 	if dec.TargetContracts != nil {
 		f.TargetContracts = dec.TargetContracts
