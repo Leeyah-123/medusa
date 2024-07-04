@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/crytic/medusa/cmd"
 	"github.com/crytic/medusa/compilation/platforms"
 	"github.com/crytic/medusa/fuzzing"
 	"github.com/crytic/medusa/fuzzing/api/handlers"
@@ -110,8 +111,8 @@ func TestEnvHandler(t *testing.T) {
 	}
 
 	if medusaVersion, ok := body["medusaVersion"]; ok {
-		if medusaVersion != "0.1.3" {
-			t.Fatalf("handler returned wrong medusa version: got %v want %v", medusaVersion, "0.1.3")
+		if medusaVersion != cmd.Version {
+			t.Fatalf("handler returned wrong medusa version: got %v want %v", medusaVersion, cmd.Version)
 		}
 	} else {
 		t.Fatalf("handler did not return medusa version: got %v", body)

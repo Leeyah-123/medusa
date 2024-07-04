@@ -3,6 +3,7 @@ package handlers
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/crytic/medusa/cmd"
 	"github.com/crytic/medusa/compilation/platforms"
 	"github.com/crytic/medusa/fuzzing"
 	"github.com/crytic/medusa/fuzzing/api/utils"
@@ -52,12 +53,10 @@ func GetEnvHandler(fuzzer *fuzzing.Fuzzer) http.HandlerFunc {
 		// Get solc version
 		v, _ := platforms.GetSystemSolcVersion()
 
-		medusaVersion := "0.1.3"
-
 		var env = map[string]any{
 			"config":        fuzzer.Config(),
 			"system":        os.Environ(),
-			"medusaVersion": medusaVersion,
+			"medusaVersion": cmd.Version,
 			"solcVersion":   v.String(),
 		}
 		err := json.NewEncoder(w).Encode(env)
@@ -163,7 +162,7 @@ func WebsocketHandler(fuzzer *fuzzing.Fuzzer) http.HandlerFunc {
 					var env = map[string]any{
 						"config":        fuzzer.Config(),
 						"system":        os.Environ(),
-						"medusaVersion": "0.1.3",
+						"medusaVersion": cmd.Version,
 						"solcVersion":   v.String(),
 					}
 
@@ -219,7 +218,7 @@ func WebsocketGetEnvHandler(fuzzer *fuzzing.Fuzzer) http.HandlerFunc {
 				var env = map[string]any{
 					"config":        fuzzer.Config(),
 					"system":        os.Environ(),
-					"medusaVersion": "0.1.3",
+					"medusaVersion": cmd.Version,
 					"solcVersion":   v.String(),
 				}
 
