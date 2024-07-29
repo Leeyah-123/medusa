@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/crytic/medusa/cmd"
 	"github.com/crytic/medusa/compilation/platforms"
 	"github.com/crytic/medusa/fuzzing"
 	"github.com/crytic/medusa/fuzzing/api/handlers"
@@ -108,14 +107,6 @@ func TestEnvHandler(t *testing.T) {
 		}
 	} else {
 		t.Fatalf("handler did not return solc version: got %v", body)
-	}
-
-	if medusaVersion, ok := body["medusaVersion"]; ok {
-		if medusaVersion != cmd.Version {
-			t.Fatalf("handler returned wrong medusa version: got %v want %v", medusaVersion, cmd.Version)
-		}
-	} else {
-		t.Fatalf("handler did not return medusa version: got %v", body)
 	}
 }
 
@@ -296,7 +287,7 @@ func TestWebsocketHandler(t *testing.T) {
 		{
 			name:           "WebsocketEnvHandler",
 			message:        "env",
-			expectedFields: []string{"config", "system", "medusaVersion", "solcVersion"},
+			expectedFields: []string{"config", "system", "solcVersion"},
 		},
 		{
 			name:           "WebsocketFuzzingHandler",
@@ -358,7 +349,7 @@ func TestWebsocketHandlers(t *testing.T) {
 		{
 			name:           "WebsocketEnvHandler",
 			handlerFunc:    handlers.WebsocketGetEnvHandler(fuzzer),
-			expectedFields: []string{"config", "system", "medusaVersion", "solcVersion"},
+			expectedFields: []string{"config", "system", "solcVersion"},
 		},
 		{
 			name:           "WebsocketFuzzingHandler",

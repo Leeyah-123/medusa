@@ -7,12 +7,12 @@ import (
 	"os"
 )
 
-const Version = "0.1.3"
+const version = "0.1.3"
 
 // rootCmd represents the root CLI command object which all other commands stem from.
 var rootCmd = &cobra.Command{
 	Use:     "medusa",
-	Version: Version,
+	Version: version,
 	Short:   "A Solidity smart contract fuzzing harness",
 	Long:    "medusa is a solidity smart contract fuzzing harness",
 }

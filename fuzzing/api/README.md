@@ -144,7 +144,6 @@ Configuration parameters exist for the API and can be provided in the config fil
             "wsUpdateInterval": 0
         }
     },
-    "medusaVersion": "0.1.3",
     "solcVersion": "0.8.17",
     "system": [
         "GJS_DEBUG_TOPICS=JS ERROR;JS LOG",

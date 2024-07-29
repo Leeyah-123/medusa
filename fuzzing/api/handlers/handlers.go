@@ -3,7 +3,6 @@ package handlers
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/crytic/medusa/cmd"
 	"github.com/crytic/medusa/compilation/platforms"
 	"github.com/crytic/medusa/fuzzing"
 	"github.com/crytic/medusa/fuzzing/api/utils"
@@ -54,10 +53,9 @@ func GetEnvHandler(fuzzer *fuzzing.Fuzzer) http.HandlerFunc {
 		v, _ := platforms.GetSystemSolcVersion()
 
 		var env = map[string]any{
-			"config":        fuzzer.Config(),
-			"system":        os.Environ(),
-			"medusaVersion": cmd.Version,
-			"solcVersion":   v.String(),
+			"config":      fuzzer.Config(),
+			"system":      os.Environ(),
+			"solcVersion": v.String(),
 		}
 		err := json.NewEncoder(w).Encode(env)
 		if err != nil {
@@ -160,10 +158,9 @@ func WebsocketHandler(fuzzer *fuzzing.Fuzzer) http.HandlerFunc {
 					v, _ := platforms.GetSystemSolcVersion()
 
 					var env = map[string]any{
-						"config":        fuzzer.Config(),
-						"system":        os.Environ(),
-						"medusaVersion": cmd.Version,
-						"solcVersion":   v.String(),
+						"config":      fuzzer.Config(),
+						"system":      os.Environ(),
+						"solcVersion": v.String(),
 					}
 
 					err = conn.WriteJSON(env)
@@ -216,10 +213,9 @@ func WebsocketGetEnvHandler(fuzzer *fuzzing.Fuzzer) http.HandlerFunc {
 				v, _ := platforms.GetSystemSolcVersion()
 
 				var env = map[string]any{
-					"config":        fuzzer.Config(),
-					"system":        os.Environ(),
-					"medusaVersion": cmd.Version,
-					"solcVersion":   v.String(),
+					"config":      fuzzer.Config(),
+					"system":      os.Environ(),
+					"solcVersion": v.String(),
 				}
 
 				err := conn.WriteJSON(env)
